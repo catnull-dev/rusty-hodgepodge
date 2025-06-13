@@ -1,13 +1,14 @@
 use std::collections::HashMap;
 
-struct Token {
-    token_type: TokenType,
-    text: String,
-    position: u64,
+#[derive(Clone)]
+pub struct Token {
+    pub token_type: TokenType,
+    pub text: String,
+    pub position: u64,
 }
 
 impl Token {
-    fn new(token_type: TokenType, text: String, position: u64) -> Self {
+    pub fn new(token_type: TokenType, text: String, position: u64) -> Self {
         Token {
             token_type,
             text,
@@ -16,9 +17,10 @@ impl Token {
     }
 }
 
-struct TokenType {
-    name: String,
-    regex: String,
+#[derive(Clone)]
+pub struct TokenType {
+    pub name: String,
+    pub regex: String,
 }
 
 impl TokenType {
@@ -27,21 +29,21 @@ impl TokenType {
     }
 }
 
-struct TokenTypes {
-    types: HashMap<String, TokenType>,
+pub struct TokenTypes {
+    pub types: HashMap<String, TokenType>,
 }
 
 impl TokenTypes {
-    fn new() -> Self {
+    pub fn new() -> Self {
         let mut collection: HashMap<String, TokenType> = HashMap::new();
         collection.insert(
             String::from("NUMBER"),
-            TokenType::new("NUMBER".to_string(), "[0-9]*".to_string()),
+            TokenType::new("NUMBER".to_string(), "[0-9]+".to_string()),
         );
 
         collection.insert(
             String::from("VARIABLE"),
-            TokenType::new("VARIABLE".to_string(), "[а-я]*".to_string()),
+            TokenType::new("VARIABLE".to_string(), "[А-Я]+".to_string()),
         );
 
         collection.insert(
@@ -51,7 +53,7 @@ impl TokenTypes {
 
         collection.insert(
             String::from("SPACE"),
-            TokenType::new("SPACE".to_string(), "[ \\n\\r\\t]".to_string()),
+            TokenType::new("SPACE".to_string(), "[ \\n\\r\\t]+".to_string()),
         );
 
         collection.insert(
@@ -87,7 +89,7 @@ impl TokenTypes {
         TokenTypes { types: collection }
     }
 
-    fn get_data(&self, data_type: &String) -> Option<&TokenType> {
+    pub fn get_data(&self, data_type: &String) -> Option<&TokenType> {
         self.types.get(data_type)
     }
 }
